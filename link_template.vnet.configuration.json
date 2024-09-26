@@ -131,7 +131,6 @@
             "name": "[concat(parameters('VNetName'), '/', parameters('Subnet5Name'))]",
             "properties": {
                 "addressPrefix": "[parameters('Subnet5AddressRange')]",
-                },
                 "serviceEndpoints": [
                     {
                         "service": "Microsoft.Storage",

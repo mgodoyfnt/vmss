@@ -192,8 +192,7 @@
                 "swiftSupported": true
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('VnetName'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
             ]
         },        
         {

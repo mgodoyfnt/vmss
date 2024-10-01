@@ -26,6 +26,9 @@
         },
         "UniqueResourceNamePrefix": {
             "type": "String"
+        },
+        "Subnet5Id": {
+            "type": "String"
         }
     },
     "variables": {

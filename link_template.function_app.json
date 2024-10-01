@@ -186,7 +186,7 @@
         {
             "type": "Microsoft.Web/sites/networkConfig",
             "apiVersion": "2022-03-01",
-            "name": "VnetIntegration",
+            "name": "[parameters('FunctionAppName')]",
             "properties": {
                 "subnetResourceId": "[parameters('subnet5Id')]",
                 "swiftSupported": true

@@ -183,7 +183,7 @@
         {
             "type": "Microsoft.Web/sites/networkConfig",
             "apiVersion": "2022-03-01",
-            "name": "[parameters('functionAppName'))]",
+            "name": "[parameters('functionAppName')]",
             "properties": {
                 "subnetResourceId": "[parameters('subnet5Id')]",
                 "swiftSupported": true

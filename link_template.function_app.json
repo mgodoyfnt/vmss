@@ -29,6 +29,9 @@
         },
         "Subnet5Id": {
             "type": "String"
+        },
+        "VnetName": {
+            "type": "String"
         }
     },
     "variables": {

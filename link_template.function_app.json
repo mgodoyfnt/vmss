@@ -229,7 +229,7 @@
                 },
                 "ipConfigurations": [
                     {
-                        "name": "[variables('functionAppName')]",
+                        "name": "[parameters('functionAppName')]",
                         "properties": {
                             "groupId": "sites",
                             "memberName": "sites",

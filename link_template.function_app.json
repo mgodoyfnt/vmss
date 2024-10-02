@@ -292,8 +292,7 @@
             "name": "[concat('FuncappDnsZoneGroup', '-', parameters('uniqueId'))]",
             "resourceGroup": "[parameters('VnetResourceGroupName')]",
             "dependsOn": [
-                "[variables('FuncappPrivateEndpointName')]",
-                "[variables('FuncappPrivateDnsZoneId')]"
+                "[variables('FuncappPrivateEndpointName')]"
             ],
             "properties": {
                 "mode": "Incremental",

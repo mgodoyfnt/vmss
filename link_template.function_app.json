@@ -269,7 +269,7 @@
             "resourceGroup": "[parameters('VnetResourceGroupName')]",
             "dependsOn": [
                 "[variables('FuncappPrivateEndpointName')]",
-                "Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net"
+                "[variables('FuncappPrivateDnsZoneId')]"
             ],
             "properties": {
                 "mode": "Incremental",

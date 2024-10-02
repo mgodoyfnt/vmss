@@ -262,7 +262,7 @@
         {
             "type": "Microsoft.Resources/deployments",
 			"apiVersion": "2017-05-10",
-            "name": "[concat('FuncappDnsZoneGroup', '-', variables('uniqueId'))]",
+            "name": "[concat('FuncappDnsZoneGroup', '-', parameters('uniqueId'))]",
             "resourceGroup": "[parameters('VnetResourceGroupName')]",
             "dependsOn": [
                 "[variables('FuncappPrivateEndpointName')]",

@@ -228,6 +228,30 @@
             "condition": "[variables('enableAzureAppInsights')]"
         },
         {
+            "type": "Microsoft.Network/privateDnsZones",
+            "apiVersion": "2018-09-01",
+            "name": "privatelink.azurewebsites.net",
+            "location": "global",
+            "properties": {},
+            "dependsOn": [],
+            "resources": []
+        },
+        {
+            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+            "apiVersion": "2020-06-01",
+            "name": "[format('{0}/{1}', 'privatelink.azurewebsites.net', format('{0}-link', 'privatelink.azurewebsites.net'))]",
+            "location": "global",
+            "properties": {
+                "registrationEnabled": false,
+                "virtualNetwork": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('VnetName'))]"
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.azurewebsites.net')]"
+            ]            
+        },	    
+        {
             "type": "Microsoft.Network/privateEndpoints",
 			"location": "[parameters('location')]",
             "name": "[variables('FuncappPrivateEndpointName')]",

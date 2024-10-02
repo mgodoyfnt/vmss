@@ -44,7 +44,10 @@
         },
 	"uniqueId": {
 	    "type": "String"
-	}	
+	},
+	"location": {
+	    "type": "String"
+	}	    
     },
     "variables": {
         "cmdDeleteAll": "[concat('az account set -s ', subscription().subscriptionId, ';', variables('cmdDeleteInsights'), variables('cmdDeleteSite'), variables('cmdDeleteServerFarm'))]",

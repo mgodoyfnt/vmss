@@ -191,9 +191,7 @@
                 "alwaysOn": true,
                 "httpsOnly": true
             }
-            "dependsOn": [
-                "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"
-            ]
+            "dependsOn": ["[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"]
         },
         {
             "type": "Microsoft.Web/sites/networkConfig",

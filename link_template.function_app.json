@@ -196,7 +196,11 @@
                         {
                             "name": "WEBSITE_RUN_FROM_PACKAGE",
                             "value": "[parameters('PackageResURL')]"
-                        }
+                        },
+			{
+			    "name": "WEBSITE_CONTENTOVERVNET"
+			    "value": "1"
+			}	
                     ]
                 },
                 "alwaysOn": true,

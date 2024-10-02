@@ -32,7 +32,13 @@
         },
         "VnetName": {
             "type": "String"
-        }
+        },
+        "FuncappTargetSubResource": {
+            "type": "array"
+        },
+        "FuncappPrivateIPAddress": {
+            "type": "string"
+        }        
     },
     "variables": {
         "cmdDeleteAll": "[concat('az account set -s ', subscription().subscriptionId, ';', variables('cmdDeleteInsights'), variables('cmdDeleteSite'), variables('cmdDeleteServerFarm'))]",
@@ -112,7 +118,10 @@
                 "reserved": false
             }
         },
-        "storageAccountId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Storage/storageAccounts/', parameters('StorageAccountName'))]"
+        "storageAccountId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Storage/storageAccounts/', parameters('StorageAccountName'))]",
+        "FuncappPrivateEndpointName": "[concat(variables('functionAppName'),'-private-endpoint')]",
+        "FuncappPrivateLinkResource": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('VnetResourceGroupName'), '/providers/Microsoft.Web/sites/', variables('functionAppName'))]",
+        "FuncappPrivateDnsZoneId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('VnetResourceGroupName'), '/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net)')]"
     },
     "resources": [
         {
@@ -209,6 +218,76 @@
                 "ApplicationId": "[parameters('FunctionAppName')]"
             },
             "condition": "[variables('enableAzureAppInsights')]"
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+			"location": "[parameters('location')]",
+            "name": "[variables('FuncappPrivateEndpointName')]",
+            "apiVersion": "2021-05-01",
+            "properties": {
+                "subnet": {
+                    "id": "[variables('subnet1').id]"
+                },
+                "ipConfigurations": [
+                    {
+                        "name": "[variables('functionAppName')]",
+                        "properties": {
+                            "groupId": "sites",
+                            "memberName": "sites",
+                            "privateIPAddress": "[parameters('FuncappPrivateIPAddress')]"
+                        }
+                    }
+                ],
+                "customNetworkInterfaceName": "[concat(variables('FuncappPrivateEndpointName'),'-nic')]",
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "[variables('FuncappPrivateEndpointName')]",
+                        "properties": {
+                            "privateLinkServiceId": "[variables('FuncappPrivateLinkResource')]",
+                            "groupIds": "[parameters('FuncappTargetSubResource')]"
+                        }
+                    }
+                ]
+            },
+            "tags": {},
+            "dependsOn": [
+                "[variables('FuncappPrivateLinkResource')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+            "name": "[concat('FuncappDnsZoneGroup', '-', variables('uniqueId'))]",
+            "resourceGroup": "[parameters('VnetResourceGroupName')]",
+            "dependsOn": [
+                "[variables('FuncappPrivateEndpointName')]",
+                "Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+                            "apiVersion": "2021-05-01",
+                            "name": "[concat(variables('FuncappPrivateEndpointName'), '/', 'default')]",
+                            "location": "[parameters('location')]",
+                            "properties": {
+                                "privateDnsZoneConfigs": [
+                                    {
+                                        "name": "privatelink-azurewebsites-net",
+                                        "properties": {
+                                            "privateDnsZoneId": "[variables('FuncappPrivateDnsZoneId')]"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
         }
     ],
     "outputs": {

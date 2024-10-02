@@ -201,7 +201,7 @@
                 },
                 "alwaysOn": true,
                 "httpsOnly": true,
-		"vnetContentShareEnabled": "bool"    
+		"vnetContentShareEnabled": "true"    
             }
         },
         {

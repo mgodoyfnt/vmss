@@ -115,7 +115,10 @@
                 "reserved": false
             }
         },
-        "storageAccountId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Storage/storageAccounts/', parameters('StorageAccountName'))]"
+        "storageAccountId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Storage/storageAccounts/', parameters('StorageAccountName'))]",
+        "FuncappPrivateEndpointName": "[concat(parameters('functionAppName'),'-private-endpoint')]",
+        "FuncappPrivateLinkResource": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('VnetResourceGroupName'), '/providers/Microsoft.Web/sites/', parameters('functionAppName'))]",
+        "FuncappPrivateDnsZoneId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('VnetResourceGroupName'), '/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net')]	    
     },
     "resources": [
         {
